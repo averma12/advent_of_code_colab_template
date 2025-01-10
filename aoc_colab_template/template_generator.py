@@ -20,12 +20,11 @@ def is_running_in_colab():
         )
 
 def create_template():
-    """Create an AOC template in the current Colab notebook"""
+    """Return the AOC template with markdown code block"""
     is_running_in_colab()
     
-    print("Creating template...")
-    
-    template = '''# @title AOC Setup and Imports {display-mode: "form"}
+    markdown_template = '''```python
+# @title AOC Setup and Imports {display-mode: "form"}
 # @markdown Check to install packages
 install_packages = True  # @param {type:"boolean"}
 
@@ -43,17 +42,7 @@ os.environ['AOC_SESSION'] = AOC_SESSION
 def get_aocd_data(day=1, year=2023):
     """Fetch AOC data for given day and year"""
     return get_data(day=day, year=year)
-'''
+```'''
     
-    js = Javascript('''
-        const template = `''' + template + '''`;
-        const cellId = google.colab.kernel.invokeFunction(
-            'notebook.CreateCell', 
-            [{'cellType': 'code', 'source': template}], 
-            {}
-        );
-    ''')
-    
-    print("About to display JS...")
-    display(js)
-    print("JS displayed")
+    from IPython.display import Markdown, display
+    display(Markdown(markdown_template))
