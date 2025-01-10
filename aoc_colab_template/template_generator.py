@@ -1,14 +1,4 @@
-from IPython.display import Javascript, display
-
 def is_running_in_colab():
-    """Check if the code is running in Google Colab
-    
-    Returns:
-        bool: True if running in Colab, raises RuntimeError otherwise
-    
-    Raises:
-        RuntimeError: If not running in Google Colab
-    """
     try:
         import google.colab
         print("You are in colab environment")
