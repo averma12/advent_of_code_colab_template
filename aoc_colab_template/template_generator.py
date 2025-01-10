@@ -1,6 +1,14 @@
-from IPython.display import Javascript
+from IPython.display import Javascript, display
 
 def is_running_in_colab():
+    """Check if the code is running in Google Colab
+    
+    Returns:
+        bool: True if running in Colab, raises RuntimeError otherwise
+    
+    Raises:
+        RuntimeError: If not running in Google Colab
+    """
     try:
         import google.colab
         return True
@@ -11,9 +19,17 @@ def is_running_in_colab():
         )
 
 def create_template():
-    """Create an AOC template in the current Colab notebook"""
-    if not is_running_in_colab():
-        raise RuntimeError("This package only works in Google Colab")
+    """Create an AOC template in the current Colab notebook
+    
+    Creates a new cell above with AOC setup code including:
+    - Package installation option
+    - AOC session setup from userdata
+    - Helper function for fetching AOC data
+    
+    Raises:
+        RuntimeError: If not running in Google Colab
+    """
+    is_running_in_colab()  # Will raise error if not in Colab
     
     template = '''# @title AOC Setup and Imports {display-mode: "form"}
 # @markdown Check to install packages
@@ -34,7 +50,7 @@ def get_aocd_data(day=1, year=2023):
     """Fetch AOC data for given day and year"""
     return get_data(day=day, year=year)
 '''
-    return Javascript(f'''
+    display(Javascript(f'''
         var cell = IPython.notebook.insert_cell_above('code');
         cell.set_text(`{template}`);
-    ''')
+    '''))
