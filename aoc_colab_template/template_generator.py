@@ -20,11 +20,10 @@ def is_running_in_colab():
         )
 
 def create_template():
-    """Return the AOC template with markdown code block"""
+    """Execute the AOC template directly"""
     is_running_in_colab()
     
-    markdown_template = '''```python
-# @title AOC Setup and Imports {display-mode: "form"}
+    template = '''# @title AOC Setup and Imports {display-mode: "form"}
 # @markdown Check to install packages
 install_packages = True  # @param {type:"boolean"}
 
@@ -42,7 +41,8 @@ os.environ['AOC_SESSION'] = AOC_SESSION
 def get_aocd_data(day=1, year=2023):
     """Fetch AOC data for given day and year"""
     return get_data(day=day, year=year)
-```'''
+'''
     
-    from IPython.display import Markdown, display
-    display(Markdown(markdown_template))
+    from IPython import get_ipython
+    ipython = get_ipython()
+    ipython.run_cell(template)
